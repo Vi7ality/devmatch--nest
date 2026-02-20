@@ -1,4 +1,17 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { CreateProfileDto } from './dto/create-profile.dto';
 
 @Controller('profiles')
 export class ProfilesController {
@@ -18,6 +31,27 @@ export class ProfilesController {
     return { id };
   }
   // POST /profiles
+
+  @Post()
+  create(@Body() createProfileDto: CreateProfileDto) {
+    return {
+      name: createProfileDto.name,
+      description: createProfileDto.description,
+    };
+  }
   // PUT /profiles/:id
+
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateProfileDto: UpdateProfileDto) {
+    return {
+      id,
+      name: updateProfileDto.name,
+      description: updateProfileDto.description,
+    };
+  }
   // DELETE /profiles/:id
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id') id: string) {}
 }
