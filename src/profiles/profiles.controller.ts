@@ -20,8 +20,8 @@ export class ProfilesController {
     1. Grab the query parameter 'location' and return an array with one profile object with its only property/value being the location
   */
   @Get()
-  findAll(@Query('location') location: string) {
-    return [{ location }];
+  findAll() {
+    return this.profilesService.findAll();
   }
 
   // GET /profiles/:id
