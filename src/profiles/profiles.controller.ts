@@ -12,9 +12,11 @@ import {
 } from '@nestjs/common';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { CreateProfileDto } from './dto/create-profile.dto';
+import { ProfilesService } from './profiles.service';
 
 @Controller('profiles')
 export class ProfilesController {
+  constructor(private profilesService: ProfilesService) {}
   // GET /profiles
   /* Challenge:
     1. Grab the query parameter 'location' and return an array with one profile object with its only property/value being the location
@@ -28,7 +30,7 @@ export class ProfilesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return { id };
+    return this.profileService.findByID(id);
   }
   // POST /profiles
 
