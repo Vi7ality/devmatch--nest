@@ -26,6 +26,7 @@ export class ProfilesService {
   }
 
   findByID(id: string) {
-    return this.profiles.filter((prof) => prof.id === id);
+    const res = this.profiles.find((prof) => prof.id === id);
+    return res;
   }
 }
