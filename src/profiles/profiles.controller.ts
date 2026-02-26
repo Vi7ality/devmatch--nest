@@ -38,7 +38,7 @@ export class ProfilesController {
   @Put(':id')
   update(
     @Param('id', ParseUUIDPipe) id: UUID,
-    @Body() updateProfileDto: UpdateProfileDto,
+    @Body(new ValidationPipe()) updateProfileDto: UpdateProfileDto,
   ) {
     return this.profilesService.update(id, updateProfileDto);
   }
