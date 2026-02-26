@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
@@ -28,8 +28,10 @@ export class ProfilesService {
   }
 
   findByID(id: string) {
-    const res = this.profiles.find((prof) => prof.id === id);
-    return res;
+    const matchingProfile = this.profiles.find((prof) => prof.id === id);
+    if (!matchingProfile)
+      throw new NotFoundException(`Profile with ID ${id} not found.`);
+    return matchingProfile;
   }
 
   create(createProfileDto: CreateProfileDto) {
@@ -43,18 +45,19 @@ export class ProfilesService {
   }
 
   update(id: string, updateProfileDto: UpdateProfileDto) {
-    const profile = this.profiles.find((prof) => prof.id === id);
+    const matchingProfile = this.profiles.find((prof) => prof.id === id);
 
-    if (!profile) return {};
-    profile.name = updateProfileDto.name;
-    profile.description = updateProfileDto.description;
-    return profile;
+    if (!matchingProfile)
+      throw new NotFoundException(`Profile with ID ${id} not found.`);
+    matchingProfile.name = updateProfileDto.name;
+    matchingProfile.description = updateProfileDto.description;
+    return matchingProfile;
   }
 
   delete(id: string): void {
     const index = this.profiles.findIndex((prof) => prof.id === id);
-    if (index !== -1) {
-      this.profiles.splice(index, index + 1);
-    }
+    if (index === -1)
+      throw new NotFoundException(`Profile with ID ${id} not found.`);
+    this.profiles.splice(index, index + 1);
   }
 }
