@@ -32,7 +32,7 @@ export class ProfilesService {
     return res;
   }
 
-  createProfile(createProfileDto: CreateProfileDto) {
+  create(createProfileDto: CreateProfileDto) {
     const newProfile = {
       id: randomUUID(),
       name: createProfileDto.name,
@@ -42,12 +42,19 @@ export class ProfilesService {
     return newProfile;
   }
 
-  updateProfile(id: string, updateProfileDto: UpdateProfileDto) {
+  update(id: string, updateProfileDto: UpdateProfileDto) {
     const profile = this.profiles.find((prof) => prof.id === id);
 
     if (!profile) return {};
-    profile?.name = updateProfileDto.name;
-    profile?.description = updateProfileDto.description;
+    profile.name = updateProfileDto.name;
+    profile.description = updateProfileDto.description;
     return profile;
+  }
+
+  delete(id: string): void {
+    const index = this.profiles.findIndex((prof) => prof.id === id);
+    if (index !== -1) {
+      this.profiles.splice(index, index + 1);
+    }
   }
 }
